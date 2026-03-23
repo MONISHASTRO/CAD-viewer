@@ -422,7 +422,7 @@
 
     <div class="loading-overlay" id="loadingOverlay">
       <div class="spinner"></div>
-      <div class="loading-text">PARSING STEP DATA</div>
+      <div class="loading-text" id="loadingText">LOADING</div>
       <div class="loading-sub" id="loadingMsg">Initialising OpenCASCADE engine…</div>
     </div>
     <div class="toast" id="toast"></div>
@@ -529,7 +529,7 @@ async function initOCCT(){ occt=await occtimportjs({locateFile:(p)=>`./libs/${p}
 
 // ── Load STP ────────────────────────────────────────────────────────────
 async function loadSTPFile(file) {
-  showLoading(true,'Reading file data…');
+  showLoading(true,'Reading file data…','PARSING STEP DATA');
   if (modelGroup){ scene.remove(modelGroup); modelGroup.traverse(o=>{if(o.geometry)o.geometry.dispose();}); modelGroup=null; modelMeshes=[]; originalColors=[]; edgesGroup=null; selectedPartIndex=-1; }
   clearAllMeasurements();
   try {
@@ -1085,14 +1085,20 @@ document.getElementById('viewport').addEventListener('drop',e=>{e.preventDefault
 function handleFile(f){if(!f.name.match(/\.(stp|step)$/i)){showToast('Please load a .STP or .STEP file');return;}loadSTPFile(f);}
 
 // ── Helpers ──────────────────────────────────────────────────────────────
-function showLoading(v,msg){document.getElementById('loadingOverlay').classList.toggle('show',v);if(msg)document.getElementById('loadingMsg').textContent=msg;}
+function showLoading(v,msg,heading){
+  const overlay=document.getElementById('loadingOverlay');
+  overlay.classList.toggle('show',v);
+  if(heading) document.getElementById('loadingText').textContent=heading;
+  if(msg) document.getElementById('loadingMsg').textContent=msg;
+}
 function setLoadingMsg(m){document.getElementById('loadingMsg').textContent=m;}
+function setLoadingText(t){document.getElementById('loadingText').textContent=t;}
 let toastTimer;
 function showToast(msg){if(!msg)return;const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
 function formatBytes(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB';}
 
 // ── Boot ─────────────────────────────────────────────────────────────────
-(async()=>{initThree();showLoading(true,'Loading local engine…');await initOCCT();showLoading(false);buildColorPresets();})();
+(async()=>{initThree();showLoading(true,'Initialising app…','STARTING');try{await initOCCT();showLoading(false);}catch(e){showToast('OCCT init failed: '+e.message);showLoading(false);}buildColorPresets();})();
 </script>
 </body>
 </html>
