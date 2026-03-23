@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # STP Viewer - Offline CAD Model Viewer
 
 A powerful offline STP/STEP file viewer built with Three.js and OpenCASCADE.
@@ -79,16 +78,9 @@ Then visit: http://localhost:8000
 
 ## License
 
-=======
-# STP Viewer - Offline CAD Model Viewer
+MIT License
 
-A powerful offline STP/STEP file viewer built with Three.js and OpenCASCADE.
-
-## Features
-
-- **3D CAD Visualization**: View STP/STEP files in your browser
-- **Measurement Tools**: Distance, diameter, radius, and angle measurements
-- **Color Customization**: Apply colors to individual parts
+(Replace with your preferred license text here.)
 - **Parts Management**: Show/hide/isolate parts with floating tree panel
 - **Theme Support**: Light, dark, and system theme options
 - **Responsive Design**: Works on desktop and mobile devices
@@ -192,5 +184,4 @@ Access-Control-Allow-Headers: Content-Type
 
 ## License
 
->>>>>>> 110eaba (Update viewer UI + sidebar toggle + webassembly headers)
 This project is open source and available under the MIT License.
