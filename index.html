@@ -39,10 +39,15 @@
     .status-pill { font-family:var(--mono); font-size:11px; padding:3px 10px; border-radius:2px; border:1px solid var(--muted); color:var(--muted); letter-spacing:0.1em; }
     .status-pill.active { border-color:var(--green); color:var(--green); }
 
-    .app { position:fixed; top:52px; left:0; right:0; bottom:0; display:grid; grid-template-columns:300px 1fr; }
+    .app { position:fixed; top:52px; left:0; right:0; bottom:0; display:grid; grid-template-columns:300px 1fr; transition:all 0.2s ease; }
+
+  .sidebar-collapsed + .viewport { margin-left:0; }
 
     /* SIDEBAR */
-    .sidebar { background:var(--panel); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; height:100%; }
+    .sidebar { background:var(--panel); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; height:100%; position:relative; width:300px; transition:transform 0.3s ease; }
+    .sidebar.hidden { transform:translateX(-100%); }
+    .sidebar-toggle { position:absolute; top:12px; right:-26px; width:24px; height:24px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999; box-shadow:0 0 10px rgba(0,0,0,.25); }
+    .sidebar-toggle:hover { background:var(--accent); color:#000; }
     .sidebar-top { overflow-y:auto; overflow-x:hidden; flex-shrink:1; min-height:0; }
     .sidebar-top::-webkit-scrollbar { width:3px; }
     .sidebar-top::-webkit-scrollbar-thumb { background:var(--border); }
@@ -81,8 +86,8 @@
     .slider-top { display:flex; justify-content:space-between; }
     .slider-name { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:0.1em; }
     .slider-num { font-family:var(--mono); font-size:10px; color:var(--accent); }
-    input[type="range"] { -webkit-appearance:none; width:100%; height:2px; background:var(--border); border-radius:1px; outline:none; }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:12px; height:12px; border-radius:50%; background:var(--accent); cursor:pointer; box-shadow:0 0 6px rgba(0,229,255,0.5); }
+    input[type="range"] { appearance:none; -webkit-appearance:none; width:100%; height:2px; background:var(--border); border-radius:1px; outline:none; }
+    input[type="range"]::-webkit-slider-thumb { appearance:none; -webkit-appearance:none; width:12px; height:12px; border-radius:50%; background:var(--accent); cursor:pointer; box-shadow:0 0 6px rgba(0,229,255,0.5); }
 
     /* ── COLOUR PICKER ── */
     .color-section { padding:10px 18px 14px; display:flex; flex-direction:column; gap:10px; }
@@ -253,7 +258,8 @@
 </header>
 
 <div class="app">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">❯</div>
     <div class="sidebar-top">
 
       <div class="section-label">// Load Model</div>
@@ -503,6 +509,17 @@ function updateAxisCanvas() {
   proj.forEach(p=>{axisCtx.beginPath();axisCtx.moveTo(cx,cy);axisCtx.lineTo(p.x,p.y);axisCtx.strokeStyle=p.color;axisCtx.lineWidth=1.5;axisCtx.stroke();axisCtx.fillStyle=p.color;axisCtx.font='9px Courier New,monospace';axisCtx.textAlign='center';axisCtx.textBaseline='middle';const ox=(p.x-cx)*0.28,oy=(p.y-cy)*0.28;axisCtx.fillText(p.label,p.x+ox,p.y+oy);});
 }
 function updateCoords(){const p=camera.position;document.getElementById('lblCoords').textContent=`x:${p.x.toFixed(1)}  y:${p.y.toFixed(1)}  z:${p.z.toFixed(1)}`;}
+
+// Sidebar toggle behavior
+const sidebar=document.getElementById('sidebar');
+const sidebarToggle=document.getElementById('sidebarToggle');
+let sidebarOpen=true;
+sidebarToggle.addEventListener('click',()=>{
+  sidebarOpen=!sidebarOpen;
+  sidebar.classList.toggle('hidden',!sidebarOpen);
+  sidebarToggle.textContent=sidebarOpen?'❯':'❮';
+  sidebarToggle.title=sidebarOpen?'Hide Sidebar':'Show Sidebar';
+});
 
 // ── OCCT ────────────────────────────────────────────────────────────────
 async function initOCCT(){ occt=await occtimportjs({locateFile:(p)=>`./libs/${p}`}); }
