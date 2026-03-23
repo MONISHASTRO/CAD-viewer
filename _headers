@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /libs/*.wasm
   Content-Type: application/wasm
   Cross-Origin-Embedder-Policy: require-corp
@@ -6,4 +7,14 @@
 /libs/*
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, POST, OPTIONS
+=======
+/libs/*.wasm
+  Content-Type: application/wasm
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Opener-Policy: same-origin
+
+/libs/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, OPTIONS
+>>>>>>> 110eaba (Update viewer UI + sidebar toggle + webassembly headers)
   Access-Control-Allow-Headers: Content-Type
