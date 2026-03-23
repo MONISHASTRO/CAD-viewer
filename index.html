@@ -40,6 +40,7 @@
     .status-pill.active { border-color:var(--green); color:var(--green); }
 
     .app { position:fixed; top:52px; left:0; right:0; bottom:0; display:grid; grid-template-columns:300px 1fr; transition:all 0.2s ease; }
+    .app.sidebar-collapsed { grid-template-columns: 0px 1fr; }
 
   .sidebar-collapsed + .viewport { margin-left:0; }
 
@@ -513,10 +514,12 @@ function updateCoords(){const p=camera.position;document.getElementById('lblCoor
 // Sidebar toggle behavior
 const sidebar=document.getElementById('sidebar');
 const sidebarToggle=document.getElementById('sidebarToggle');
+const app=document.querySelector('.app');
 let sidebarOpen=true;
 sidebarToggle.addEventListener('click',()=>{
   sidebarOpen=!sidebarOpen;
   sidebar.classList.toggle('hidden',!sidebarOpen);
+  app.classList.toggle('sidebar-collapsed',!sidebarOpen);
   sidebarToggle.textContent=sidebarOpen?'❯':'❮';
   sidebarToggle.title=sidebarOpen?'Hide Sidebar':'Show Sidebar';
 });
